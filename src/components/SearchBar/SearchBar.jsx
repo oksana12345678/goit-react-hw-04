@@ -2,7 +2,7 @@ import toast, { Toaster } from "react-hot-toast";
 import css from "./SearchBar.module.css";
 import { VscError } from "react-icons/vsc";
 
-const SearchBar = () => {
+const SearchBar = ({ onSearch }) => {
   const notify = () =>
     toast(
       <p className={css.error}>
@@ -12,8 +12,11 @@ const SearchBar = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const inputValue = e.target.elements.text.value;
-    if (!inputValue) {
+    const form = e.target;
+    const searchQuery = e.target.elements.text.value;
+    onSearch(searchQuery);
+    form.reset();
+    if (!searchQuery) {
       notify();
       return;
     }
@@ -45,14 +48,17 @@ const SearchBar = () => {
       />
 
       <form className={css.form} onSubmit={handleSubmit}>
-        <input className={css.searchText}
+        <input
+          className={css.searchText}
           type="text"
           name="text"
           autoComplete="off"
           autoFocus
           placeholder="Search images and photos"
         />
-        <button className={css.formBtn} type="submit">Search</button>
+        <button className={css.formBtn} type="submit">
+          Search
+        </button>
       </form>
     </header>
   );
