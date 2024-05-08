@@ -1,13 +1,3 @@
-.error {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-.errorIcon {
-  width: 30px;
-  height: 30px;
-}
 .topHeader {
   display: flex;
   align-items: center;
@@ -22,17 +12,45 @@
   gap: 24px;
 }
 .searchText {
-  width: 200px;
+  width: 252px;
   height: 30px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 0 10px;
+  padding-left: 76px;
   outline: none;
+  position: relative;
+  background-color: #202020;
 }
 
 .formBtn {
-  width: 60px;
+  position: absolute;
+  width: 48px;
   height: 30px;
   border: none;
   border-radius: 4px;
+  background-color: transparent;
+  color: rgb(22, 22, 22);
+  transition: color, background 1s;
+  cursor: pointer;
+}
+.formBtn:hover {
+  color: rgb(230, 224, 235);
+  background-color: rgb(2, 2, 2);
+}
+.icon {
+  color: #d9d6d6;
+  cursor: pointer;
+}
+.icon:hover {
+  color: rgb(0, 203, 95);
+}
+.errorToast {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.errorIcon {
+  width: 30px;
+  height: 30px;
 }
