@@ -18,6 +18,10 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState("");
   const [endOfCollection, setEndOfCollection] = useState(false);
+  const [hasLoadedImages, setHasLoadedImages] = useState(false);
+
+  const [totalImages, setTotalImages] = useState([]);
+
   const handleOpenModal = (imageUrl) => {
     setSelectedImages(imageUrl);
     setIsOpen(true);
@@ -35,35 +39,31 @@ function App() {
       setPage(1);
       setSearchTerm(searchTerm);
       const data = await fetchImages(searchTerm);
+      setTotalImages(data);
       setImages(data.results);
       setEndOfCollection(false);
-      console.log(data.results);
+      setHasLoadedImages(true);
     } catch (error) {
       setError(true);
     } finally {
       setLoading(false);
     }
   };
-
-  const total = async () => {
-    const fetch = await fetchImages(searchTerm);
-    const total = fetch.total;
-    return total;
-  };
-
   useEffect(() => {
     const fetchTotalImages = async () => {
-      const data = await fetchImages(searchTerm);
-      const total = Math.ceil(data.total / 15);
-      return total;
+      const total = Math.ceil(images.length);
+      setTotalImages(total);
     };
 
-    fetchTotalImages().then((total) => {
-      if (page >= total) {
-        setEndOfCollection(true);
-      }
-    });
-  }, [searchTerm, page]);
+    fetchTotalImages();
+  }, [images]);
+  useEffect(() => {
+    if (page >= totalImages) {
+      setEndOfCollection(true);
+    } else {
+      setEndOfCollection(false);
+    }
+  }, [page, totalImages]);
 
   const handleLoadMore = async () => {
     try {
@@ -72,7 +72,6 @@ function App() {
       setPage((prevPage) => prevPage + 1);
       setImages((prevImages) => [...prevImages, ...nextPageData.results]);
     } catch (error) {
-      console.error("Error loading more images:", error);
       setError(true);
     } finally {
       setLoading(false);
@@ -84,7 +83,7 @@ function App() {
       {images.length > 0 && (
         <ImageGallery images={images} isOpen={handleOpenModal} />
       )}
-      {endOfCollection && <EndOfImages />}
+      {endOfCollection && hasLoadedImages && <EndOfImages />}
       {error && <ErrorMessage searchTerm={searchTerm} setError={setError} />}
       {loading && <Loader />}
       {images.length > 0 && !endOfCollection && (
