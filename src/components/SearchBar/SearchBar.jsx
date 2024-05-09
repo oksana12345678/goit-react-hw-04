@@ -2,7 +2,11 @@ import toast, { Toaster } from "react-hot-toast";
 import css from "./SearchBar.module.css";
 import { VscError } from "react-icons/vsc";
 import { IoSearchOutline } from "react-icons/io5";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import { useId } from "react";
+
 const SearchBar = ({ onSearch }) => {
+  const searchId = useId();
   const notify = () =>
     toast(
       <p className={css.errorToast}>
@@ -11,17 +15,16 @@ const SearchBar = ({ onSearch }) => {
       </p>
     );
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    const form = e.target;
-    const searchQuery = e.target.elements.text.value;
-    onSearch(searchQuery);
-    if (!searchQuery) {
+  function handleSubmit(values, action) {
+    const { text } = values;
+    onSearch(text);
+    if (!text) {
       notify();
       return;
     }
-    form.reset();
+    action.resetForm();
   }
+
   return (
     <header className={css.topHeader}>
       <Toaster
@@ -47,20 +50,28 @@ const SearchBar = ({ onSearch }) => {
           },
         }}
       />
-
-      <form className={css.form} onSubmit={handleSubmit}>
-        <input
-          className={css.searchText}
-          type="text"
-          name="text"
-          autoComplete="off"
-          autoFocus
-          placeholder="Search images and photos"
-        />
-        <button className={css.formBtn} type="submit">
-          <IoSearchOutline className={css.icon} />
-        </button>
-      </form>
+      <Formik onSubmit={handleSubmit} initialValues={{ text: "" }}>
+        <Form className={css.form}>
+          <div>
+            <label className={css.nameOfLabel} htmlFor={searchId}>
+              Search
+            </label>
+            <Field
+              className={css.searchText}
+              type="text"
+              name="text"
+              autoComplete="off"
+              id={searchId}
+              autoFocus
+              placeholder="Search images and photos"
+            />
+            <ErrorMessage name="topic" component="span" />
+          </div>
+          <button className={css.formBtn} type="submit">
+            <IoSearchOutline className={css.icon} />
+          </button>
+        </Form>
+      </Formik>
     </header>
   );
 };

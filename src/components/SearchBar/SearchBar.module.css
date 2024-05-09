@@ -14,12 +14,13 @@
 .searchText {
   width: 252px;
   height: 30px;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 4px;
   padding-left: 54px;
   outline: none;
   position: relative;
   background-color: #202020;
+  color: #ccc;
 }
 
 .formBtn {
@@ -53,4 +54,7 @@
 .errorIcon {
   width: 30px;
   height: 30px;
+}
+.nameOfLabel {
+  display: none;
 }
