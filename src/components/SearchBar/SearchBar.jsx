@@ -17,11 +17,13 @@ const SearchBar = ({ onSearch }) => {
 
   function handleSubmit(values, action) {
     const { text } = values;
-    onSearch(text);
     if (!text) {
       notify();
       return;
+    } else {
+      onSearch(text);
     }
+
     action.resetForm();
   }
 

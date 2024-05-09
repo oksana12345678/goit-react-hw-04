@@ -25,9 +25,11 @@
   color: rgba(255, 255, 255, 0.87);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  width: 260px;
+  max-width: 260px;
   overflow: scroll;
   height: 52px;
+  display: flex;
+  align-items: center;
 }
 p {
   margin: 0;

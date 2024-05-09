@@ -19,8 +19,8 @@ function App() {
   const [selectedImages, setSelectedImages] = useState("");
   const [endOfCollection, setEndOfCollection] = useState(false);
   const [hasLoadedImages, setHasLoadedImages] = useState(false);
-
-  const [totalImages, setTotalImages] = useState([]);
+  const [totalCollection, setTotalCollection] = useState({});
+  const [totalImages, setTotalImages] = useState(0);
 
   const handleOpenModal = (imageUrl) => {
     setSelectedImages(imageUrl);
@@ -39,8 +39,8 @@ function App() {
       setPage(1);
       setSearchTerm(searchTerm);
       const data = await fetchImages(searchTerm);
-      setTotalImages(data);
       setImages(data.results);
+      setTotalCollection(data.total);
       setEndOfCollection(false);
       setHasLoadedImages(true);
     } catch (error) {
@@ -51,12 +51,12 @@ function App() {
   };
   useEffect(() => {
     const fetchTotalImages = async () => {
-      const total = Math.ceil(images.length);
+      const total = Math.ceil(totalCollection / 15);
       setTotalImages(total);
     };
 
     fetchTotalImages();
-  }, [images]);
+  }, [totalCollection]);
   useEffect(() => {
     if (page >= totalImages) {
       setEndOfCollection(true);
@@ -64,7 +64,6 @@ function App() {
       setEndOfCollection(false);
     }
   }, [page, totalImages]);
-
   const handleLoadMore = async () => {
     try {
       setLoading(true);

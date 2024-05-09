@@ -9,7 +9,12 @@ const ImageCard = ({ small, description, likes, download, onClick }) => {
 
   return (
     <div className={css.imageContainer}>
-      <img className={css.listImage} src={small} alt="" onClick={onClick} />
+      <img
+        className={css.listImage}
+        src={small}
+        alt={description || "image"}
+        onClick={onClick}
+      />
       <div className={css.descriptionImage}>
         <p className={css.likes}>
           <SlLike />
